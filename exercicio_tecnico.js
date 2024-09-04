@@ -29,37 +29,38 @@ console.log("Questão 2 - O número", number, isFibonacci(number) ? "pertence" :
 
 
 // Questão 3: Cálculo de faturamento diário 
-const faturamento = [ 
-  { "dia": 1, "valor": 1000 },
-  { "dia": 2, "valor": 1500 },
-  { "dia": 3, "valor": 0 }, 
-  { "dia": 4, "valor": 2000 },
-  { "dia": 5, "valor": 1200 },
-  
-];
+const db = require('./DB.json'); // Importa o arquivo JSON
 
 function calcularFaturamento(faturamento) {
-  let menor = Infinity;
-  let maior = -Infinity;
+  // Inicializa 'menor' e 'maior' com o valor do primeiro elemento do array
+  let menor = faturamento[0].valor;
+  let maior = faturamento[0].valor;
   let soma = 0;
   let diasComFaturamento = 0;
 
   faturamento.forEach(dia => {
-    if (dia.valor > 0) { // ignora dias sem faturamento
+    if (dia.valor > 0) { // Ignora dias sem faturamento
+      // Atualiza o menor valor se o valor atual for menor
       if (dia.valor < menor) menor = dia.valor;
+      // Atualiza o maior valor se o valor atual for maior
       if (dia.valor > maior) maior = dia.valor;
+      
+      // Acumula o valor para calcular a média depois
       soma += dia.valor;
       diasComFaturamento++;
     }
   });
 
+  // Calcula a média dos dias com faturamento
   const media = soma / diasComFaturamento;
+
+  // Conta os dias com faturamento acima da média
   const diasAcimaDaMedia = faturamento.filter(dia => dia.valor > media).length;
 
   return { menor, maior, diasAcimaDaMedia };
 }
 
-console.log("Questão 3 - Faturamento:", calcularFaturamento(faturamento));
+console.log("Questão 3 - Faturamento:", calcularFaturamento(db.faturamento));
 
 
 // Questão 4: Percentual de representação por estado
